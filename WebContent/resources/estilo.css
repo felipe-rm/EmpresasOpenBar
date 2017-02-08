@@ -1,0 +1,26 @@
+@CHARSET "ISO-8859-1";
+
+.itemNovo {
+	background: red !important;
+	color: white;
+	font-weight: bold; 
+}
+
+.itemPreparando {
+	background: yellow !important;
+	color: black;
+	font-weight: bold;			
+}
+
+.itemPronto {
+	background: green !important;
+	color: white;
+	font-weight: bold;
+}
+
+.teste
+    {
+    overflow: auto;
+    width: 100%;
+    height: 50px;
+}

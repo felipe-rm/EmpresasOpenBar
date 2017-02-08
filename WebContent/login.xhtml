@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"> 
+
+<h:head>
+	<style type="text/css">
+		.body {
+			background-color: black;
+		}
+
+		#content {
+			position: absolute;
+			left: 45%;
+			top: 45%;
+			margin-left: -110px;
+			margin-top: -40px;
+			position: absolute;
+		}
+	</style>
+</h:head> 
+<h:body>
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north" size="68" resizable="false" closable="false" collapsible="false">
+        	<h:panelGrid columns="2">
+        		<p:graphicImage value="/Imagens/LogoCabecalho.png" />
+        		<h:outputText value="Open Bar - Registros de Empresas" />
+        	</h:panelGrid>
+    	</p:layoutUnit>
+		<p:layoutUnit id="center" position="center">    
+			<div id="content">
+				<h:form id="frmLogin">
+					<p:messages id="mensagens" showDetail="false" autoUpdate="true" closable="true" />
+					<p:panel id="pnlLogin" header="Acesso ao Sistema">
+						<p:focus context="pnlLogin"/>
+						<h:panelGrid id="pnlgLogin" columns="2" style="horizontal-align:center;" >
+							<h:outputLabel for="login" value="Login:" />
+							<p:inputText id="login" value="#{usuarioMB.usuario.usuario}" 
+								required="true" requiredMessage="Informe o login."/>
+							<h:outputLabel for="senha" value="Senha" />
+							<p:password id="senha" value="#{usuarioMB.usuario.senha}"
+								required="true" requiredMessage="Informe a senha." />	
+						</h:panelGrid>
+						<h:commandButton update="pnlgLogin" action="#{usuarioMB.efetuarLogin}" value="Login" />
+					</p:panel>
+				</h:form>
+			</div>
+		</p:layoutUnit>
+	</p:layout>
+</h:body> 
+</html>

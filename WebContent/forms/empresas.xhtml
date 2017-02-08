@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:composition template ="/templates/masterPage.xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<ui:define name="conteudo">
+	
+	<p:growl id="mensagem" showDetail="true" autoUpdate="true"
+		closable="true" />
+		<h:form id="frmEmpresas">
+			<p:panel id="lista" header="Lista de Empresas" style="width: 1785;">	
+				<p:commandLink title="Incluir" oncomplete="dialogCadastrar.show()"
+					update=":formCadastrar" immediate="false" action="#{empresaMB.limpar}">
+					<p:graphicImage value="/Imagens/Add.png" />
+				</p:commandLink>
+				<p:dataTable id="tabela" var="item" value="#{empresaMB.lista}"
+					paginator="true" rows="50"
+					emptyMessage="Não há registros na lista"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,15,25,50,100" style="heigth: 10%;"
+					scrollWidth="100%" resizableColumns="true">
+					<p:column headerText="" style="text-align:center;width: 1;"
+						exportable="false">
+						<p:commandLink title="Alterar" update=":formCadastrar:tvwEmpresa"
+							oncomplete="dialogCadastrar.show()" immediate="true">
+							<p:graphicImage value="/Imagens/Edit.png" />
+							<f:setPropertyActionListener
+								target="#{empresaMB.empresa}" value="#{item}" />
+						</p:commandLink>
+					</p:column>
+					<p:column headerText="" style="text-align:center;width: 1;">
+						<p:commandLink title="Excluir" update=":Excluir"
+							oncomplete="confirmation.show()" immediate="false">
+							<p:graphicImage value="/Imagens/Delete.png" />
+							<f:setPropertyActionListener
+								target="#{empresaMB.empresa}" value="#{item}" />
+						</p:commandLink>
+					</p:column>	
+					<p:column headerText="Código" style="width: 30;"
+						sortBy="#{item.codigo}">
+						<h:outputText value="#{item.codigo}" />
+					</p:column>
+					<p:column headerText="Razão Social" style="width: 80;"
+						sortBy="#{item.razao}">
+						<h:outputText value="#{item.razao}" />
+					</p:column>
+					<p:column headerText="I.E." style="width: 40;"
+						sortBy="#{item.ie}">
+						<h:outputText value="#{item.ie}" />
+					</p:column>
+					<p:column headerText="CPF/CNPJ" style="width: 50;"
+						sortBy="#{item.cpfCnpj}">
+						<h:outputText value="#{item.cpfCnpj}" />
+					</p:column>
+					<p:column headerText="Endereço" style="width: 60;" 
+						sortBy="#{item.endereco}">
+						<h:outputText value="#{item.endereco}" />
+					</p:column>
+					<p:column headerText="Bairro" style="width: 40;"
+						sortBy="#{item.bairro}">
+						<h:outputText value="#{item.bairro}" />
+					</p:column>
+					<p:column headerText="Cidade" style="width: 40;"
+						sortBy="#{item.cidade}">
+						<h:outputText value="#{item.cidade}" />
+					</p:column>
+					<p:column headerText="UF" style="width: 10;"
+						sortBy="#{item.uf}">
+						<h:outputText value="#{item.uf}" />
+					</p:column>
+					<p:column headerText="Telefone" style="width: 20;"
+						sortBy="#{item.telefone}">
+						<h:outputText value="#{item.telefone}" />
+					</p:column>
+					<p:column headerText="Celular" style="width: 20;"
+						sortBy="#{item.celular}">
+						<h:outputText value="#{item.celular}" />
+					</p:column>
+					<p:column headerText="E-Mail" style="width: 40;"
+						sortBy="#{item.email}">
+						<h:outputText value="#{item.email}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+		
+		<p:confirmDialog id="Excluir" closable="true" appendTo="@(body)"
+			message="Confirma a exclusão da compra de código: #{empresaMB.empresa.codigo}?"
+			header="Excluir" severity="alert" widgetVar="confirmation">
+			<h:form id="formExcluir" appendTo="@(body)">
+				<h:inputHidden value="#{empresaMB.empresa.codigo}" />
+				<p:commandButton id="btnConfirmar" value="Sim"
+					oncomplete="confirmation.hide()" action="#{empresaMB.excluir}"
+					update=":frmEmpresas:tabela :mensagem" />
+				<p:commandButton id="decline" value="Não"
+					onclick="confirmation.hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+		
+		<h:form id="formCadastrar">
+			<p:dialog header="Cadastrar" widgetVar="dialogCadastrar" modal="false">
+			<p:ajax event="close" listener="#{empresaMB.carregarItens}" />
+			<p:tabView id="tvwEmpresa" orientation="left">
+			<h:inputHidden value="#{empresaMB.empresa.codigo}" />
+        		<p:tab title="Dados Empresa">
+            		<p:panelGrid id="panelCadastrar" columns="4">
+						<h:outputLabel for="razaoSocial" value="Razão Social:" />
+						<p:inputText id="razaoSocial" value="#{empresaMB.empresa.razao}" maxlength="40" />
+            			<h:outputLabel for="ie" value="I.E.:" />
+						<p:inputText id="ie" value="#{empresaMB.empresa.ie}" maxlength="15" />
+            			<h:outputLabel for="cpfCnpj" value="CPF/CNPJ:" />
+						<p:inputText id="cpfCnpj" value="#{empresaMB.empresa.cpfCnpj}" maxlength="18" />
+            			<h:outputLabel for="endereco" value="Endereço:" />
+						<p:inputText id="endereco" value="#{empresaMB.empresa.endereco}" maxlength="60" />
+            			<h:outputLabel for="bairro" value="Bairro:" />
+						<p:inputText id="bairro" value="#{empresaMB.empresa.bairro}" maxlength="60" />
+						<h:outputLabel for="cidade" value="Cidade:" />
+						<p:inputText id="cidade" value="#{empresaMB.empresa.cidade}" maxlength="60" />
+						<h:outputLabel for="uf" value="UF:" />
+						<p:inputText id="uf" value="#{empresaMB.empresa.uf}" size="2" maxlength="2" />
+						<h:outputLabel for="telefone" value="Telefone:" />
+						<p:inputMask id="telefone" value="#{empresaMB.empresa.telefone}" mask="(99)9999-9999" />
+						<h:outputLabel for="celular" value="Celular:" />
+						<p:inputMask id="celular" value="#{empresaMB.empresa.celular}" mask="(99)99999-9999" />
+						<h:outputLabel for="email" value="E-Mail:" />
+						<p:inputMask id="email" value="#{empresaMB.empresa.email}" />
+					</p:panelGrid>
+        		</p:tab>
+        		<p:tab id="tabRegistrosDispositivos" title="Registros Dispositivos">
+            		<p:panelGrid id="pnlRegistrosDispositivos" columns="1">
+						<h:outputLabel for="registro" value="Registro Dispositivo:" />
+						<p:inputText id="registro" value="#{empresaMB.dispositivo.registro}" />
+            			</p:panelGrid>
+            			<p:panelGrid columns="1">
+            			<p:dataTable id="tabelaDispositivos" var="item" value="#{empresaMB.empresa.lstDispositivos}" 
+            				paginator="true" rows="4"
+							emptyMessage="Não há registros na lista"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="4,8,16,32,64" style="heigth: 10%;"
+							scrollWidth="100%" resizableColumns="true">
+							<p:column headerText="Excluir" style="width: 20;">
+								<p:commandLink title="Excluir" update=":formCadastrar:tvwEmpresa:tabelaDispositivos"
+									action="#{empresaMB.removerItem}" immediate="true">
+									<p:graphicImage value="/Imagens/Excluir.png" />
+									<f:setPropertyActionListener target="#{empresaMB.dispositivo}" value="#{item}" />
+								</p:commandLink>
+							</p:column>
+							<p:column headerText="Registro" style="width: 200;"
+								sortBy="#{item.registro}">
+								<h:outputText value="#{item.registro}" />
+							</p:column>
+						</p:dataTable>
+					</p:panelGrid>
+					<p:commandButton value="Adicionar" id="btnAdicionar"
+					action="#{empresaMB.adicionarItem}"
+					update=":formCadastrar:tvwEmpresa:tabelaDispositivos" />
+        		</p:tab>
+    		</p:tabView>
+        		<p:commandButton value="Salvar" id="btnCadastrar"
+					action="#{empresaMB.salvar}"
+					update=":frmEmpresas:tabela" />
+			</p:dialog>
+		</h:form>
+		<p:confirmDialog id="ExcluirItem" closable="true" appendTo="@(body)"
+			header="Excluir" severity="alert" widgetVar="confirmation">
+			<h:form id="formExcluirItem" appendTo="@(body)">
+				<p:commandButton id="btnConfirmar" value="Sim"
+					oncomplete="confirmation.hide()" action="#{empresaMB.excluirItem}"
+					update=":formCadastrar:tvwEmpresa:tabelaDispositivos" />
+				<p:commandButton id="decline" value="Não"
+					onclick="confirmation.hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+	</ui:define>
+</ui:composition>

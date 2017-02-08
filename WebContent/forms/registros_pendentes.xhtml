@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<ui:composition template ="/templates/masterPage.xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:define name="conteudo">
+	
+	<p:growl id="mensagem" showDetail="true" autoUpdate="true"
+		closable="true" />
+		<h:form id="frmConsultaCompras">
+			<p:panel id="lista" header="Consulta de Compras" style="width: 146%;">	
+				<p:dataTable id="tabela" var="item" value="#{consultaComprasMB.lstCompras}"
+					filteredValue="#{consultaComprasMB.lstComprasFiltradas}"
+					widgetVar="tabelaCompras" paginator="true" rows="50"
+					emptyMessage="Não há registros na lista"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,15,25,50,100" style="heigth: 10%;"
+					scrollWidth="100%" resizableColumns="true">
+        			<p:column exportable="false" style="width:16px">
+            			<p:rowToggler />
+        			</p:column>	
+					<p:column style="width: 15%;"
+						sortBy="#{item.fornecedor.descricao}" 
+						filterBy="#{item.fornecedor.descricao}"  
+                		filterOptions="#{consultaComprasMB.opcoesFornecedor}"  
+                		filterMatchMode="exact">
+                		<f:facet name="header">
+                			<h:outputText value="Fornecedor" />
+            			</f:facet>
+						<h:outputText value="#{item.fornecedor.descricao}" />
+					</p:column>
+					<p:column style="width: 15%;"
+						sortBy="#{item.formaPagamento.descricao}" 
+						filterBy="#{item.formaPagamento.descricao}"  
+                		filterOptions="#{consultaComprasMB.opcoesFormaPagamento}"  
+                		filterMatchMode="exact">
+                		<f:facet name="header">
+                			<h:outputText value="Forma Pg." />
+            			</f:facet>
+						<h:outputText value="#{item.formaPagamento.descricao}" />
+					</p:column>
+					<p:column style="width: 15%;"
+						sortBy="#{item.funcionario.descricao}" 
+						filterBy="#{item.funcionario.descricao}"  
+                		filterOptions="#{consultaComprasMB.opcoesFuncionario}"  
+                		filterMatchMode="exact">
+                		<f:facet name="header">
+                			<h:outputText value="Funcionário" />
+            			</f:facet>
+						<h:outputText value="#{item.funcionario.descricao}" />
+					</p:column>
+					<p:column style="width: 10%;" 
+						sortBy="#{item.getStrDtCompra()}" 
+						filterBy="#{item.getStrDtCompra()}" 
+						filterMatchMode="contains">
+						<f:facet name="header">
+                			<h:outputText value="Dt. Compra" />
+            			</f:facet>
+						<h:outputText value="#{item.getStrDtCompra()}">
+							<!-- <f:convertDateTime pattern="dd/MM/yyyy" />-->
+						</h:outputText>
+					</p:column>
+					<p:column style="width: 15%;" 
+						sortBy="#{item.custoTotal}">
+						<f:facet name="header">
+                			<h:outputText value="Custo Total" />
+            			</f:facet>
+						<h:outputText value="#{item.custoTotal}" style="text-align: right;" />
+					</p:column>
+					<p:column style="width: 15%;"
+						sortBy="#{item.valorTotalItens}">
+						<f:facet name="header">
+                			<h:outputText value="Total Itens" />
+            			</f:facet>
+						<h:outputText value="#{item.valorTotalItens}" />
+					</p:column>
+					<p:column style="width: 10%;"
+						sortBy="#{item.desconto}">
+						<f:facet name="header">
+                			<h:outputText value="Desconto" />
+            			</f:facet>
+						<h:outputText value="#{item.desconto}" />
+					</p:column>
+					<p:column style="width: 10%;"
+						sortBy="#{item.acrescimo}">
+						<f:facet name="header">
+                			<h:outputText value="Acréscimo" />
+            			</f:facet>
+						<h:outputText value="#{item.acrescimo}" />
+					</p:column>
+					<p:column style="width: 15%;"
+						sortBy="#{item.valorTotal}">
+						<f:facet name="header">
+                			<h:outputText value="Valor Total" />
+            			</f:facet>
+						<h:outputText value="#{item.valorTotal}" />
+					</p:column>
+					<p:column style="width: 15%;"
+						sortBy="#{item.observacao}">
+						<f:facet name="header">
+                			<h:outputText value="Observação" />
+            			</f:facet>
+						<h:outputText value="#{item.observacao}" />
+					</p:column>
+			 		<p:rowExpansion>
+				 		<p:panel id="lista" header="Itens" style="width: 50%;">
+				            <p:dataTable var="itemCompra" value="#{item.lstItens}"
+				            	paginator="true" rows="20"
+								paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15,20" style="heigth: 10%;"
+								scrollWidth="20%" resizableColumns="true" liveResize="true"
+								scrollable="true">
+								<p:column headerText="Cód. Produto" style="width: 7%;">
+									<h:outputText value="#{itemCompra.produto.codigo}" />
+								</p:column>
+								<p:column headerText="Produto" style="width: 15%;">
+									<h:outputText value="#{itemCompra.produto.descricao}" />
+								</p:column>
+								<p:column headerText="Und." style="width: 5%;">
+									<h:outputText value="#{itemCompra.unidade}" />
+								</p:column>
+								<p:column headerText="Qtd." style="width: 7%;">
+									<h:outputText value="#{itemCompra.qtd}" />
+								</p:column>
+								<p:column headerText="Custo" style="width: 8%;">
+									<h:outputText value="#{itemCompra.custo}" />
+								</p:column>
+								<p:column headerText="Custo Total" style="width: 8%;">
+									<h:outputText value="#{itemCompra.custoTotal}" />
+								</p:column>
+							</p:dataTable>
+						</p:panel>
+			        </p:rowExpansion>
+		    	</p:dataTable>
+		    	<h:commandLink title="XLS" immediate="false">
+        			<p:graphicImage value="/Imagens/xls.png" />
+        			<p:dataExporter type="xls" target="tabela" fileName="Compras" pageOnly="true" />
+    			</h:commandLink>
+	    	</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

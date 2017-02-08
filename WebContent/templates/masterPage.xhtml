@@ -1,0 +1,38 @@
+ <html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<h:outputStylesheet name="/estilo.css"  />
+</h:head>
+<h:body>
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north" size="65" resizable="false" closable="false" collapsible="false">
+        	<h:panelGrid columns="2">
+        		<p:graphicImage value="/imagens/LogoCabecalho.png" />
+        		<h:outputText value="Open Bar - Registros de Empresas" />
+        	</h:panelGrid>
+    	</p:layoutUnit>
+		<p:layoutUnit position="west" size="200" header="Menu" resizable="true" collapsible="true">
+			<h:form>
+				<p:menu>
+					<p:menuitem value="Home" outcome="/index.xhtml" icon="imagens/Incluir.png" />
+				</p:menu>
+				<p:panelMenu style="width:200px">
+					<p:submenu label="Cadastros">
+						<p:menuitem value="Empresas" outcome="/forms/empresas.xhtml" icon="Imagens" />
+					</p:submenu>
+					<p:submenu label="Consultas">
+						<p:menuitem value="Registros Pendentes" outcome="/forms/registros_pendentes.xhtml" icon="Imagens" />					
+					</p:submenu>
+				</p:panelMenu>
+			</h:form>
+		</p:layoutUnit>
+		<p:layoutUnit position="center">
+			<ui:insert name="conteudo"></ui:insert>
+		</p:layoutUnit>
+	</p:layout>
+	<!-- <h:outputScript name="/scripts.js" />-->
+</h:body>
+</html>
